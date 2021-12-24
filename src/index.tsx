@@ -325,7 +325,9 @@ export default class ActionSheet extends Component<Props, State, any> {
           duration: 150,
           useNativeDriver: true
         })
-      ]).start();
+      ]).start(()=>{
+        this.setFlatlistScrollenable(this.props.gestureEnabled)
+      });
     } else {
       this.opacityValue.setValue(1);
     }
@@ -440,13 +442,17 @@ export default class ActionSheet extends Component<Props, State, any> {
     }
   };
 
+  setFlatlistScrollenable(scrollable: boolean = false){
+    this.scrollViewRef.current.setNativeProps({ scrollEnabled:scrollable })
+  }
+
   _onTouchMove = () => {
     if (this.props.closeOnTouchBackdrop) {
       this._hideModal();
     }
     this.setState({
       scrollable: false
-    });
+    }, this.setFlatlistScrollenable);
   };
 
   _onTouchStart = () => {
@@ -455,7 +461,7 @@ export default class ActionSheet extends Component<Props, State, any> {
     }
     this.setState({
       scrollable: false
-    });
+    }, this.setFlatlistScrollenable);
   };
 
   _onTouchEnd = () => {
@@ -463,6 +469,8 @@ export default class ActionSheet extends Component<Props, State, any> {
     if (this.props.gestureEnabled) {
       this.setState({
         scrollable: true
+      },()=>{
+        this.setFlatlistScrollenable(true)
       });
     }
   };
@@ -726,7 +734,7 @@ export default class ActionSheet extends Component<Props, State, any> {
               showsVerticalScrollIndicator={false}
               onMomentumScrollBegin={this._onScrollBegin}
               onMomentumScrollEnd={this._onScrollEnd}
-              scrollEnabled={scrollable}
+              scrollEnabled={false}
               onScrollBeginDrag={this._onScrollBeginDrag}
               onTouchEnd={this._onTouchEnd}
               onScroll={this._onScroll}
