@@ -325,7 +325,7 @@ export default class ActionSheet extends Component<Props, State, any> {
           duration: 150,
           useNativeDriver: true
         })
-      ]).start(()=>{
+      ]).start(() => {
         this.setFlatlistScrollenable(this.props.gestureEnabled)
       });
     } else {
@@ -442,8 +442,8 @@ export default class ActionSheet extends Component<Props, State, any> {
     }
   };
 
-  setFlatlistScrollenable(scrollable: boolean = false){
-    this.scrollViewRef.current.setNativeProps({ scrollEnabled:scrollable })
+  setFlatlistScrollenable(scrollEnabled: boolean = false) {
+    this.scrollViewRef?.current?.setNativeProps({ scrollEnabled })
   }
 
   _onTouchMove = () => {
@@ -469,7 +469,7 @@ export default class ActionSheet extends Component<Props, State, any> {
     if (this.props.gestureEnabled) {
       this.setState({
         scrollable: true
-      },()=>{
+      }, () => {
         this.setFlatlistScrollenable(true)
       });
     }
