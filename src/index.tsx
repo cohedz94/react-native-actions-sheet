@@ -152,9 +152,14 @@ export default class ActionSheet extends Component<Props, State, any> {
   /**
    * Hide the ActionSheet
    */
-  hide = () => {
+  hide = (callBack = () => { }) => {
     this.setModalVisible(false);
+    this.callBackWhenOnClose = callBack
   };
+
+  callBackWhenOnClose() {
+
+  }
 
   /**
    * Open/Close the ActionSheet
@@ -199,7 +204,13 @@ export default class ActionSheet extends Component<Props, State, any> {
         duration: animated ? closeAnimationDuration : 1,
         useNativeDriver: true
       })
-    ]).start();
+    ]).start(() => {
+      try {
+        this.callBackWhenOnClose()
+      } catch (err) {
+
+      }
+    });
 
     waitAsync((closeAnimationDuration ?? 300) / 1.5).then(() => {
       if (!closable) {
